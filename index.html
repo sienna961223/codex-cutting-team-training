@@ -123,14 +123,14 @@
     main { scroll-snap-type: none; }
     .slide {
       min-height: auto;
-      padding: 74px 62px 12px;
+      padding: 74px 62px 20px;
       display: grid;
       justify-items: center;
       align-items: start;
       scroll-snap-align: none;
       scroll-margin-top: 64px;
     }
-    .slide + .slide { padding-top: 12px; }
+    .slide + .slide { padding-top: 20px; }
     .stage {
       width: min(1280px, calc(100vw - 110px));
       min-height: 0;
@@ -822,11 +822,11 @@
     }
     .big-question h2 { color: white; }
     .big-question p { color: rgba(255,255,255,.78); margin-top: 18px; }
-    #s16 { padding-bottom: 12px; }
+    #s16 { padding-bottom: 20px; }
     .closing { min-height: min(430px, calc(100vh - 220px)); display: grid; place-items: center; text-align: center; }
     #s17 {
       min-height: 40vh;
-      padding-top: 12px;
+      padding-top: 20px;
     }
     .ip-finale {
       min-height: min(360px, calc(100vh - 220px));
@@ -893,13 +893,13 @@
     .reveal.in { opacity: 1; transform: translateY(0); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     #_coolMode_effect { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
-    .particle { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; opacity: 1; background: var(--c); transform: translate3d(var(--x),var(--y),0) scale(1); animation: particle-burst 1.7s cubic-bezier(.2,.76,.22,1) forwards; }
+    .particle { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; opacity: 1; background: var(--c); transform: translate3d(var(--x),var(--y),0) scale(1); animation: particle-burst 1.2s cubic-bezier(.16,.88,.24,1) forwards; will-change: transform; }
     @keyframes particle-burst {
       0% { opacity: 1; transform: translate3d(var(--x), var(--y), 0) scale(1); }
-      18% { opacity: 1; transform: translate3d(calc(var(--x) + var(--vx)), calc(var(--y) + var(--vy)), 0) scale(1.04); }
-      52% { opacity: 1; transform: translate3d(calc(var(--x) + var(--mx)), calc(var(--y) + var(--arc)), 0) scale(1); }
-      86% { opacity: 1; transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--fall)), 0) scale(.98); }
-      100% { opacity: 1; transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--fall)), 0) scale(.98); }
+      22% { opacity: 1; transform: translate3d(calc(var(--x) + var(--vx)), calc(var(--y) + var(--vy)), 0) scale(1); }
+      58% { opacity: 1; transform: translate3d(calc(var(--x) + var(--mx)), calc(var(--y) + var(--arc)), 0) scale(1); }
+      92% { opacity: 1; transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--fall)), 0) scale(.96); }
+      100% { opacity: 0; transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--fall)), 0) scale(.92); }
     }
 
     @media (max-width: 980px) {
@@ -1338,18 +1338,18 @@
     const effect = document.createElement('div');
     effect.id = '_coolMode_effect';
     document.body.appendChild(effect);
-    function burstAt(x, y, count = 8) {
+    function burstAt(x, y, count = 10) {
       const colors = ['#2B7FD8', '#F4D758', '#E84A5F'];
       for (let i = 0; i < count; i++) {
         const p = document.createElement('span');
         const side = Math.random() < .5 ? -1 : 1;
-        const spread = 90 + Math.random() * 300;
+        const spread = 64 + Math.random() * 190;
         const dx = side * spread;
-        const vx = side * (34 + Math.random() * 88);
-        const vy = -(70 + Math.random() * 118);
-        const mx = dx * (.42 + Math.random() * .22);
-        const arc = -(145 + Math.random() * 270);
-        const fall = 130 + Math.random() * 330;
+        const vx = side * (24 + Math.random() * 62);
+        const vy = -(42 + Math.random() * 82);
+        const mx = dx * (.45 + Math.random() * .16);
+        const arc = -(78 + Math.random() * 160);
+        const fall = 66 + Math.random() * 180;
         p.className = 'particle';
         p.style.setProperty('--x', `${x}px`);
         p.style.setProperty('--y', `${y}px`);
@@ -1359,15 +1359,15 @@
         p.style.setProperty('--arc', `${arc}px`);
         p.style.setProperty('--dx', `${dx}px`);
         p.style.setProperty('--fall', `${fall}px`);
-        p.style.setProperty('--s', `${(7 + Math.random() * 8) * 3.4}px`);
+        p.style.setProperty('--s', `${(5 + Math.random() * 7) * 2.625}px`);
         p.style.setProperty('--c', colors[i % colors.length]);
         effect.appendChild(p);
-        setTimeout(() => p.remove(), 1700);
+        setTimeout(() => p.remove(), 1200);
       }
     }
     window.burstAt = burstAt;
     document.querySelectorAll('[data-cool]').forEach(el => {
-      el.addEventListener('click', event => burstAt(event.clientX, event.clientY, 6));
+      el.addEventListener('click', event => burstAt(event.clientX, event.clientY, 10));
     });
     document.querySelectorAll('.jump-card').forEach(el => {
       let hoverTimer = null;
@@ -1382,10 +1382,10 @@
       el.addEventListener('pointerenter', event => {
         hoverPoint = { x: event.clientX, y: event.clientY };
         stopHoverBurst();
-        burstAt(hoverPoint.x, hoverPoint.y, 6);
+        burstAt(hoverPoint.x, hoverPoint.y, 8);
         hoverTimer = setInterval(() => {
           burstAt(hoverPoint.x, hoverPoint.y, 3);
-        }, 430);
+        }, 170);
       });
       el.addEventListener('pointerleave', stopHoverBurst);
       el.addEventListener('blur', stopHoverBurst);
